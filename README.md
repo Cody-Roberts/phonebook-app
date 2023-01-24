@@ -23,57 +23,59 @@ Front-end Development:
 - MS Studio Code 
 
 Project Approach:
-    Starting this project my prior knowledge of Web-Development was working with mySQL, HTML/CSS, and PHP. This gave me a general idea of how to approach creating a Front-End webpage, connecting to a database, and sending/receiving data. My disadvantages were that I was unfamiliar with all the specific tools required to complete this project. After researching the fundamentals of using Java, Spring Boot, and Angular online through videos and intro docs, I started building a Backend beginning with creating my project, Phonebook-app, and making a model, Person Class, that contained all the needed variables for a single entry object.
-    **Backend**
-    Model: Class Object Person
-        - Constructors, Setters, Getters
-        - Constraints for variables added for FirstName, Email, Phone
-        - Represent object as string for printing
-        - Boolean nameIsValid() used for UnitTest
-    Repository Interface: Extend CRUD Services
-        - JPA Repo utilized for built-in ease-of-use functions 
-    Service: Service Layer
-        - @Transactional Annotation to declaratively control transaction boundaries on Dependency Injection managed beans
-        - Dependency Injection from Repository
-            -Inherits methods from JPA Repo to save, delete, & find
-        - CRUD (Get, Post, Delete, Put)
-        - Send/receive CRUD Operations requests between Database Layer & API Layer
-    Exception:
-        -Handles error output for service class
-    Controller: API Layer
-        - JPA Persistence
-        - @RestController Annotation adds restful web services needed to handle the requests made by the client
-        - Dependency Injection from PersonService
-        - Verified Localhost connection: localhost:8080/api/v1/person
-        - Send/receives CRUD Operations requests between Service Layer & Client (HTTP Protocol used to communicate to the client side)
-    Testing:
-        - UnitTest with Junit 5 - firstName constraint & CRUD Operations
-        - Used Postman to test Get/Post entry into DB
-    CORS: (Cross-Origin Resource Sharing) was added to allow Frontend to access Backend domain
-    **Database**
-    DB: PostGres
-        - Connected Backend through app properties
-        - Url: Localhost:5432/person
-    **Frontend**
-    Model:
-        - Response Object Type
-        - Marks datatypes to return to Backend
-    Service:
-        - Made to be injectable into Component and API URL imported through environment file
-        - Send/receives CRUD Operations requests between Component & Backend Controller (HTTP Protocol used to communicate to Controller)
-    Component:
-        - Bind Person data model
-        - Dependency Injection from Service
-        - Utilizing Observables for passing messages between parts of UI and Service
-        - CRUD Operations use subscribe to listen to and handle console logs
-        - onOpenModal() 
-            - Directs update and delete button clicks to their UI section
-            - From there the HTML form or pop-up request loads and finalizes the request on click to their specific functional component (Example: onDeletePerson)
-            -Originally included add (See Issues)
-    User Interface:
-        - HTML/CSS/JS imported from https://bootdey.com/snippets/view/bs4-contact-cards
-        - Features a Navigation Bar where you can add an entry, and shows contact cards as a single viewable entry which I utilized to show individual Phonebook entries
-        - Utilizes Bootstrap 4, NgModal for individual entries, and NgForm for the pop-up form
+Starting this project my prior knowledge of Web-Development was working with mySQL, HTML/CSS, and PHP. This gave me a general idea of how to approach creating a Front-End webpage, connecting to a database, and sending/receiving data. My disadvantages were that I was unfamiliar with all the specific tools required to complete this project. After researching the fundamentals of using Java, Spring Boot, and Angular online through videos and intro docs, I started building a Backend beginning with creating my project, Phonebook-app, and making a model, Person Class, that contained all the needed variables for a single entry object.
+**Backend**
+Model: Class Object Person
+- Constructors, Setters, Getters
+- Constraints for variables added for FirstName, Email, Phone
+- Represent object as string for printing
+- Boolean nameIsValid() used for UnitTest
+Repository Interface: Extend CRUD Services
+- JPA Repo utilized for built-in ease-of-use functions 
+Service: Service Layer 
+- @Transactional Annotation to declaratively control transaction boundaries on Dependency Injection managed beans
+- Dependency Injection from Repository
+-Inherits methods from JPA Repo to save, delete, & find CRUD (Get, Post, Delete, Put)
+- Send/receive CRUD Operations requests between Database Layer & API Layer
+Exception:
+-Handles error output for service class
+Controller: API Layer
+- JPA Persistence
+- @RestController Annotation adds restful web services needed to handle the requests made by the client
+- Dependency Injection from PersonService
+- Verified Localhost connection: localhost:8080/api/v1/person
+- Send/receives CRUD Operations requests between Service Layer & Client (HTTP Protocol used to communicate to the client side)     
+Testing:
+ - UnitTest with Junit 5 - firstName constraint & CRUD Operations
+ - Used Postman to test Get/Post entry into DB
+ 
+CORS: (Cross-Origin Resource Sharing) was added to allow Frontend to access Backend domain
+
+**Database**
+DB: PostGres
+- Connected Backend through app properties
+- Url: Localhost:5432/person
+
+**Frontend**
+Model:
+- Response Object Type
+- Marks datatypes to return to Backend
+Service:
+- Made to be injectable into Component and API URL imported through environment file
+- Send/receives CRUD Operations requests between Component & Backend Controller (HTTP Protocol used to communicate to Controller)
+Component:
+- Bind Person data model
+- Dependency Injection from Service
+- Utilizing Observables for passing messages between parts of UI and Service
+- CRUD Operations use subscribe to listen to and handle console logs
+- onOpenModal() 
+* Directs update and delete button clicks to their UI section
+* From there the HTML form or pop-up request loads and finalizes the request on click to their specific functional component (Example: onDeletePerson)
+* Originally included add (See Issues)
+User Interface:
+- HTML/CSS/JS imported from https://bootdey.com/snippets/view/bs4-contact-cards
+- Features a Navigation Bar where you can add an entry, and shows contact cards as a single viewable entry which I utilized to show individual Phonebook entries
+- Utilizes Bootstrap 4, NgModal for individual entries, and NgForm for the pop-up form
 
 
 *****ISSUES*****
