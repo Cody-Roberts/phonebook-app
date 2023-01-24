@@ -1,0 +1,183 @@
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"/>
+<!--Navigation Bar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" style="color:white;">Phonebook</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <!-- Add entry button trigger modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPersonModel">Add Entry</button>
+          <!--<a class="nav-link" (click)="onOpenModal(null!, 'add')">Add Entry <span class="sr-only">(current)</span></a> sr-only = screen reading-->
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <!--Search function-->
+        <input type="search" (ngModelChange)="searchPersons(key.value)" #key="ngModel" ngModel
+         name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search records" required>
+      </form>
+  </div>
+</nav>
+
+<!--Entry Cards-->
+<div class="container" id="main-container">
+  <div class="row">
+    <!--*ngFor A Structural directive referencing person class as a template input variable-->
+    <div *ngFor="let person of persons" class="col-md-6 col-xl-3"> 
+      <div class="card m-b-30">
+        <div class="card-body row">
+          <div class="col-6 card-title align-self-center mb-0">
+            <!--person? checks to see if entry exists before accessing-->
+            <h5>{{person?.firstName + ' ' + person?.middleInitial + ' ' + person?.lastName}}</h5> 
+          </div>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{person?.email}}</li>
+          <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{person?.address}}</li>
+          <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone : {{person?.phoneNumber}}</li>
+        </ul>
+        <div class="card-body">
+          <div class="float-right btn-group btn-group-sm">
+            <!--adding click listener for edit & delete entry button-->
+            <a (click)="onOpenModal(person, 'edit')" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+            <a (click)="onOpenModal(person, 'delete')" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Person Modal -->
+<div class="modal fade" id="addPersonModel" tabindex="-1" role="dialog" aria-labelledby="addPersonModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addPersonModalLabel">Add Person</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!--Creates ngForm and references add function in compontents.ts-->
+        <form #addForm="ngForm" (ngSubmit)="onAddPerson(addForm)"> 
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" ngModel name="firstName" class="form-control" id="firstName" placeholder="First Name" required> <!--"required" tag to force user to input-->
+            <span class="validity"></span>  <!--Verification Check Mark-->
+          </div>
+          <div class="form-group">
+            <label for="middleInitial">Middle Initial</label>
+            <input type="text" ngModel name="middleInitial" class="form-control" id="middleInitial" placeholder="Middle Initial" pattern="[a-zA-Z]{1}">
+            <span class="validity"></span>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" ngModel name="lastName" class="form-control" id="lastName" placeholder="Last Name">
+            <span class="validity"></span>
+          </div>
+          <div class="form-group">
+            <label for="phoneNumber">Optional: Phone Number (Format: xxx.xxx.xxxx)</label><!--***********Add in auto add of dots-->
+            <input type="tel" ngModel name="phoneNumber" class="form-control" id="phoneNumber" placeholder="xxx.xxx.xxxx" pattern="[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{4}"> <!--Optional-->
+            <span class="validity"></span>
+          </div>
+          <div class="form-group">
+            <label for="email">Optional: Email Address</label>
+            <input type="email" ngModel name="email" class="form-control" id="email" placeholder="user@email.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"> <!--Optional-->
+            <span class="validity"></span>
+          </div>
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" ngModel name="address" class="form-control" id="address" placeholder="123 North Street City, USA 49092">
+            <span class="validity"></span>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-person-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <!--Disabling submit button until form is valid-->
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Person Modal -->
+<div class="modal fade" id="updatePersonModal" tabindex="-1" role="dialog" aria-labelledby="personEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updatePersonModalLabel">Edit Person {{editPerson?.firstName}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #editForm="ngForm">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" ngModel="{{editPerson?.firstName}}" name="firstName" class="form-control" id="firstName" aria-describedby="emailHelp" placeholder="First Name">
+              </div>
+              <input type="hidden" ngModel="{{editPerson?.id}}" name="id" class="form-control" id="id" placeholder="Email">
+              <div class="form-group">
+                <label for="middleInitial">Middle Initial</label>
+                <input type="text" ngModel="{{editPerson?.middleInitial}}" name="middleInitial" class="form-control" id="middleInitial" aria-describedby="emailHelp" placeholder="Middle Initial">
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" ngModel="{{editPerson?.lastName}}" name="lastName" class="form-control" id="lastName" aria-describedby="emailHelp" placeholder="Last Name">
+              </div>
+              <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" ngModel="{{editPerson?.phoneNumber}}" name="phoneNumber" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone Number">
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" ngModel="{{editPerson?.email}}" name="email" class="form-control" id="email" placeholder="Email">
+              </div>
+              <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" ngModel="{{editPerson?.address}}" name="address" class="form-control" id="address" placeholder="Address">
+              </div>
+              <div class="modal-footer">
+                <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                <button (click)="onUpdatePerson(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Save changes</button>
+              </div>
+          </form>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Person Modal -->
+<div class="modal fade" id="deletePersonModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModelLabel">Delete Person</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete person {{deletePerson?.firstName}}?</p>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <!--deletePerson!.id not deletePerson? to specify that it can't be NULL-->
+            <button (click)="onDeletePerson(deletePerson?.id!)" class="btn btn-danger" data-dismiss="modal">Yes</button> 
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notification for no persons -->
+<div *ngIf="persons?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">NO ENTRIES!</h4>
+    <p>No entries were found.</p>
+  </div>
+</div>
