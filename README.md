@@ -18,7 +18,7 @@ Database:
 - PostGres (apiBaseUrl: 'http://localhost:8080/api/v1')
 
 Front-end Development:
-- Angular/TypeScript/CLI
+- Angular/TypeScript/Node.js/CLI
 - HTML/CSS/JavaScript
 - MS Studio Code 
 
